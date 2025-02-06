@@ -1,0 +1,2 @@
+action,行动
+react,反应
