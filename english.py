@@ -71,21 +71,23 @@ async def get_chinese_translation(english):
 
 # 添加单词
 async def add_word():
-    words = read_words()
-    english = input("请输入英文单词: ").strip()
+    while True:
+        words = read_words()
+        english = input("请输入英文单词: ").strip()
+        if english == 'q':
+            break
+        # 自动生成中文翻译
+        chinese = await get_chinese_translation(english)
 
-    # 自动生成中文翻译
-    chinese = await get_chinese_translation(english)
-
-    if chinese:
-        if english in words:
-            print(f"单词 {english} 已经存在！")
+        if chinese:
+            if english in words:
+                print(f"单词 {english} 已经存在！")
+            else:
+                words[english] = chinese
+                save_words(words)
+                print(f"单词 {english} 添加成功！中文意思是: {chinese}")
         else:
-            words[english] = chinese
-            save_words(words)
-            print(f"单词 {english} 添加成功！中文意思是: {chinese}")
-    else:
-        print("翻译失败，单词未添加！")
+            print("翻译失败，单词未添加！")
 
 
 # 删除单词
